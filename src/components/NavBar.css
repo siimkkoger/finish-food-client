@@ -1,0 +1,78 @@
+/* Existing styles */
+
+.NavBar {
+    background-color: #131921;
+    padding: 0.5rem 1rem;
+}
+
+.NavBar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.NavBar-logo {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.NavBar-link {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.NavBar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.NavBar-link:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced search box styles */
+
+.NavBar-header form {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 40%; /* adjust this value to suit your preference */
+}
+
+.NavBar-header span {
+    padding: 1px 1px;
+    font-size: 16px;
+    background-color: #f3a847;
+    display: flex;
+    align-items: center;
+}
+
+.NavBar-header input[type="text"] {
+    flex: 1;
+    padding: 8px 10px;
+    border: none;
+    font-size: 16px;
+}
+
+.NavBar-header button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #f3a847;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.NavBar-header button:hover {
+    background-color: #d18e3b;
+}

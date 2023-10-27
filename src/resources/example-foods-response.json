@@ -1,0 +1,114 @@
+{
+  "expectedFoods": [
+    {
+      "foodId": 1,
+      "name": "Hamburger",
+      "description": "A classic American hamburger with lettuce, tomato, onion, and cheese.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "9.9900",
+      "pickupTime": "2023-09-22 12:00:00",
+      "productType": "FOOD",
+      "productProviderName": "McDonalds"
+    },
+    {
+      "foodId": 2,
+      "name": "Pizza",
+      "description": "A delicious pepperoni pizza with a crispy crust and melted cheese.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "12.9900",
+      "pickupTime": "2023-09-22 13:30:00",
+      "productType": "FOOD",
+      "productProviderName": "Pizza Mc Hut"
+    },
+    {
+      "foodId": 3,
+      "name": "Pasta",
+      "description": "A hearty spaghetti dish with tomato sauce and meatballs.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "14.9900",
+      "pickupTime": "2023-09-23 13:00:00",
+      "productType": "FOOD",
+      "productProviderName": "Subway"
+    },
+    {
+      "foodId": 4,
+      "name": "Ice cream",
+      "description": "A bowl of cold, delicious ice cream.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "Contains dairy.",
+      "price": "4.9900",
+      "pickupTime": "2023-09-23 13:30:00",
+      "productType": "FOOD",
+      "productProviderName": "McDonalds"
+    },
+    {
+      "foodId": 5,
+      "name": "Tiramisu",
+      "description": "A classic Italian dessert made with coffee-dipped ladyfingers and a creamy mascarpone filling.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "Contains dairy and gluten.",
+      "price": "6.9900",
+      "pickupTime": "2023-09-24 14:00:00",
+      "productType": "FOOD",
+      "productProviderName": "McDonalds"
+    },
+    {
+      "foodId": 6,
+      "name": "Fried rice",
+      "description": "A dish of rice fried with vegetables and your choice of protein.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "11.9900",
+      "pickupTime": "2023-09-25 14:30:00",
+      "productType": "FOOD",
+      "productProviderName": "Chipotle Mc"
+    },
+    {
+      "foodId": 7,
+      "name": "Cheeseburger",
+      "description": "A classic cheeseburger with lettuce, tomato, onion, and a juicy patty.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "8.9900",
+      "pickupTime": "2023-10-25 12:15:00",
+      "productType": "FOOD",
+      "productProviderName": "Subway"
+    },
+    {
+      "foodId": 8,
+      "name": "Margherita Pizza",
+      "description": "A traditional Margherita pizza with fresh mozzarella, basil, and tomato sauce.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "11.9900",
+      "pickupTime": "2024-10-25 12:45:00",
+      "productType": "FOOD",
+      "productProviderName": "Pizza Mc Hut"
+    },
+    {
+      "foodId": 9,
+      "name": "General Tso Chicken",
+      "description": "Crispy chicken in a sweet and spicy General Tso sauce with steamed rice.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "Contains gluten.",
+      "price": "13.9900",
+      "pickupTime": "2024-11-25 13:15:00",
+      "productType": "FOOD",
+      "productProviderName": "Chipotle Mc"
+    },
+    {
+      "foodId": 10,
+      "name": "Tacos",
+      "description": "Delicious street-style tacos with your choice of fillings.",
+      "image": "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=500",
+      "dietaryRestrictions": "None",
+      "price": "9.9900",
+      "pickupTime": "2025-01-01 13:45:00",
+      "productType": "FOOD",
+      "productProviderName": "Tiki Taco"
+    }
+  ]
+}
