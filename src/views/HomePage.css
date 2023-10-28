@@ -26,12 +26,14 @@
     opacity: 0;
     transform: translateY(-30px);
     animation: fadeIn 1.5s forwards 0.3s;
+    font-size: 5rem;
 }
 
 .mission-statement {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeIn 1.5s forwards 1s;
+    font-size: 25px;
 }
 
 @keyframes fadeIn {

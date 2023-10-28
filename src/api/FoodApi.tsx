@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/food';
+const BASE_URL_FOOD = 'http://localhost:8080/api/food';
+const BASE_URL_PRODUCT = 'http://localhost:8080/api/product';
 
 export const fetchFoods = async (filter: GetFoodsFilter): Promise<GetFoodResponse[]> => {
     try {
-        const response = await axios.post(`${BASE_URL}/get-foods`, filter);
+        const response = await axios.post(`${BASE_URL_FOOD}/get-foods`, filter);
         return response.data;
     } catch (error) {
         throw error;
@@ -13,7 +14,7 @@ export const fetchFoods = async (filter: GetFoodsFilter): Promise<GetFoodRespons
 
 export const fetchFoodById = async (id: string): Promise<GetFoodResponse> => {
     try {
-        const response = await axios.get(`${BASE_URL}/get-food/${id}`);
+        const response = await axios.get(`${BASE_URL_FOOD}/get-food/${id}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -22,7 +23,35 @@ export const fetchFoodById = async (id: string): Promise<GetFoodResponse> => {
 
 export const addFoodToCart = async (foodId: string): Promise<boolean> => {
     try {
-        const response = await axios.post(`${BASE_URL}/add-food-to-cart/${foodId}`);
+        const response = await axios.post(`${BASE_URL_FOOD}/add-food-to-cart/${foodId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export type ProductProvider = {
+    id: number;
+    name: string;
+}
+
+export const getProductProviders = async (): Promise<ProductProvider[]> => {
+    try {
+        const response = await axios.get(`${BASE_URL_PRODUCT}/get-providers`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export type FoodCategory = {
+    id: number;
+    name: string;
+}
+
+export const getFoodCategories = async (): Promise<FoodCategory[]> => {
+    try {
+        const response = await axios.get(`${BASE_URL_FOOD}/get-food-categories`);
         return response.data;
     } catch (error) {
         throw error;

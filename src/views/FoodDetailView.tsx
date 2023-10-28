@@ -9,17 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import {Alert, CircularProgress} from "@mui/material";
 
-enum SnackBarType {
-    success = "success",
-    error = "error"
-}
-
-enum SnackBarVisibility {
-    visible = "visible",
-    hidden = "hidden"
-}
-
-
 
 const FoodDetailView: React.FC = () => {
     const {id} = useParams<{ id: string }>();
@@ -40,7 +29,7 @@ const FoodDetailView: React.FC = () => {
             try {
                 if (id === undefined) throw new Error("No food id provided");
                 const data = await fetchFoodById(id);
-                setGetFoodResponse(data);
+                setTimeout(() => setGetFoodResponse(data), 300);
             } catch (e) {
                 if (e instanceof Error) {
                     setError(e.message);
@@ -52,10 +41,6 @@ const FoodDetailView: React.FC = () => {
 
     if (error) {
         return <ErrorView message={error}/>
-    }
-
-    if (!getFoodResponse) {
-        return <CircularProgress/>
     }
 
     const handleAddToCart = () => {
@@ -74,23 +59,36 @@ const FoodDetailView: React.FC = () => {
     }
 
     return (
-        <div className="food-detail-view">
-            <img src={getFoodResponse.image} alt={getFoodResponse.name} className="large-image"/>
-            <h1>{getFoodResponse.name}</h1>
-            <p className="large-price">${parseFloat(getFoodResponse.price).toFixed(2)}</p>
-            <p>{getFoodResponse.description}</p>
-            <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
+        <div className="platform-background">
+            {
+                !getFoodResponse && !error && (
+                    <div className="circularProgress">
+                        <CircularProgress/>
+                    </div>
+                )
+            }
+            {
+                getFoodResponse != null && (
+                    <div className="food-detail-view">
+                        <img src={getFoodResponse.image} alt={getFoodResponse.name} className="large-image"/>
+                        <h1>{getFoodResponse.name}</h1>
+                        <p className="large-price">${parseFloat(getFoodResponse.price).toFixed(2)}</p>
+                        <p>{getFoodResponse.description}</p>
+                        <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
 
-            <Snackbar
-                open={snackBarIsVisible}
-                autoHideDuration={3000}
-                onClose={handleCloseSnackBar}
-                message="Custom message"
-            >
-                <Alert onClose={handleCloseSnackBar} severity="success" sx={{width: '100%'}}>
-                    Added to cart
-                </Alert>
-            </Snackbar>
+                        <Snackbar
+                            open={snackBarIsVisible}
+                            autoHideDuration={3000}
+                            onClose={handleCloseSnackBar}
+                            message="Custom message"
+                        >
+                            <Alert onClose={handleCloseSnackBar} severity="success" sx={{width: '100%'}}>
+                                Added to cart
+                            </Alert>
+                        </Snackbar>
+                    </div>
+                )
+            }
         </div>
     );
 };
