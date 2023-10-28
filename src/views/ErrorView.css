@@ -10,14 +10,14 @@
     padding: 1rem; /* Add some padding around */
 }
 
-h2 {
+.error-container h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
     color: #e74c3c;
     text-align: center; /* Center-align the text */
 }
 
-p {
+.error-container p {
     font-size: 1.2rem;
     text-align: center; /* Center-align the text */
 }

@@ -1,0 +1,44 @@
+/* src/views/NotFoundPage.css */
+
+.notfound-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(120deg, #ff6b6b, #2c3e50);
+    animation: gradientError 10s ease infinite;
+}
+
+@keyframes gradientError {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.error-number {
+    font-size: 10rem;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeInError 1s forwards 0.3s;
+}
+
+.error-description {
+    font-size: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInError 1s forwards 1s;
+}
+
+@keyframes fadeInError {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

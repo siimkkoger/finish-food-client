@@ -82,7 +82,7 @@
     overflow: visible; /* To make sure the food list is visible */
 }
 
-.food-list {
+.search-food-list {
     position: absolute;
     top: 100%; /* Position it right below the search bar */
     right: 0; /* Align to the right of the container */
@@ -110,8 +110,8 @@
 }
 
 .food-item-image {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     margin-right: 10px;
 }
@@ -122,4 +122,15 @@
 
 .food-provider {
     color: #888;
+}
+
+.food-item .food-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: auto;
+    float: right;
+}
+
+.food-name-provider {
+
 }

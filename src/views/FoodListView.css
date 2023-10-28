@@ -10,8 +10,21 @@ div {
     display: flex;
     flex-wrap: wrap;
     gap: 16px; /* space between cards */
-    justify-content: start;
+    justify-content: center;
+    align-items: baseline;
     padding: 16px;
+    margin-top: 50px;
+}
+
+.foods-container a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.food-description {
+    margin-bottom: 30px;
+    text-align: center;
+    height: 50px;
 }
 
 /* Individual food card styling */
@@ -25,7 +38,9 @@ div {
 }
 
 .food-card:hover {
-    transform: translateY(-5px);
+    cursor: pointer;           /* Changes the cursor to a hand pointer when hovering */
+    transform: translateY(-5px);    /* Slightly enlarges the card on hover */
+    transition: transform 0.2s ease-in-out;  /* Smoothens the enlarging effect */
 }
 
 .food-card img {
@@ -58,9 +73,11 @@ div {
 /* Food details with icons */
 .food-details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for a better structure */
-    gap: 8px;
+    /*
+    grid-template-columns: repeat(2, 1fr);
+     */
     margin-top: 8px;
+
 }
 
 .food-details p {

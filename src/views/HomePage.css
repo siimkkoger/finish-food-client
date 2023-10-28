@@ -1,0 +1,42 @@
+/* src/views/HomePage.css */
+
+.landing-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(120deg, #f093fb, #f5576c);
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.landing-title {
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeIn 1.5s forwards 0.3s;
+}
+
+.mission-statement {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1.5s forwards 1s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -37,7 +37,7 @@ const NavBar: React.FC = () => {
             <header className="NavBar-header">
                 <div className="NavBar-logo">Your Logo</div>
                 <Link to="/" className="NavBar-link">Home</Link>
-                <Link to="/foods" className="NavBar-link">Foods</Link>
+                <Link to="/food" className="NavBar-link">Foods</Link>
                 <Link to="/product/:productId" className="NavBar-link">Product</Link>
                 <Link to="/cart" className="NavBar-link">Cart</Link>
 
@@ -59,7 +59,7 @@ const NavBar: React.FC = () => {
 
                     {/* Food list */}
                     {showFoodList && (
-                        <div className="food-list">
+                        <div className="search-food-list">
                             {foods.map(food => (
                                 <div className="food-item" key={food.foodId}>
                                     <img src={food.image} alt={food.name} className="food-item-image"/>

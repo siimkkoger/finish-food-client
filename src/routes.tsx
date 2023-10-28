@@ -7,6 +7,7 @@ import FoodListView from './views/FoodListView';
 import CartPage from './views/CartPage';
 import NotFoundPage from './views/NotFoundPage';
 import NavBar from "./components/NavBar";
+import FoodDetailView from "./views/FoodDetailView";
 
 const RoutesComponent: React.FC = () => {
     return (
@@ -16,7 +17,8 @@ const RoutesComponent: React.FC = () => {
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/product/:productId" element={<ProductPage/>}/>
                 <Route path="/cart" element={<CartPage/>}/>
-                <Route path="/foods" element={<FoodListView/>}/>
+                <Route path="/food" element={<FoodListView/>}/>
+                <Route path="/food/:id" element={<FoodDetailView/>} />
 
                 {/* 404 - Not Found route */}
                 <Route path="*" element={<NotFoundPage/>}/>

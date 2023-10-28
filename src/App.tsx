@@ -7,7 +7,7 @@ const App: React.FC = () => {
             <header className="App-header">
                 {/* Navigation Buttons */}
                 <Link to="/">Home</Link>
-                <Link to="/foods">Foods</Link>
+                <Link to="/food">Foods</Link>
                 <Link to="/product/:productId">Product</Link>
                 <Link to="/cart">Cart</Link>
             </header>
