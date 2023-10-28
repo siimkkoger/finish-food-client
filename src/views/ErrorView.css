@@ -1,0 +1,34 @@
+.error-container {
+    display: flex;
+    flex-direction: column; /* Display children vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f7fa;
+    color: #333;
+    font-family: Arial, sans-serif;
+    padding: 1rem; /* Add some padding around */
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #e74c3c;
+    text-align: center; /* Center-align the text */
+}
+
+p {
+    font-size: 1.2rem;
+    text-align: center; /* Center-align the text */
+}
+
+@media (max-width: 768px) {
+    /* Adjustments for smaller screens (like mobile devices) */
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}

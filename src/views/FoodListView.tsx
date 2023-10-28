@@ -2,27 +2,30 @@
 
 import React, { useState, useEffect } from 'react';
 import './FoodListView.css';
-
-type GetFoodResponse = {
-    foodId: number;
-    name: string;
-    description: string;
-    image: string;
-    dietaryRestrictions: string;
-    price: string;
-    pickupTime: string;
-    productType: string;
-    productProviderName: string;
-};
+import {DEFAULT_FILTER, fetchFoods, GetFoodResponse} from "../api/FoodApi";
+import ErrorView from "./ErrorView";
 
 const FoodListView: React.FC = () => {
     const [foods, setFoods] = useState<GetFoodResponse[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        import('../resources/example-foods-response.json').then(data => {
-            setFoods(data.expectedFoods);
-        });
+        const getFoods = async () => {
+            try {
+                const data = await fetchFoods(DEFAULT_FILTER);
+                setFoods(data);
+            } catch (e) {
+                if (e instanceof Error) {
+                    setError(e.message);
+                }
+            }
+        };
+        getFoods();
     }, []);
+
+    if (error) {
+        return <ErrorView message={error} />;
+    }
 
     return (
         <div>
