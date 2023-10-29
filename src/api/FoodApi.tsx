@@ -82,7 +82,12 @@ export type GetFoodResponse = {
     name: string;
     description: string;
     image: string;
-    dietaryRestrictions: string;
+    vegetarian: boolean;
+    vegan: boolean;
+    glutenFree: boolean;
+    nutFree: boolean;
+    dairyFree: boolean;
+    organic: boolean;
     price: string;
     pickupTime: string;
     productType: string;

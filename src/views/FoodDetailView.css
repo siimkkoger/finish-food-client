@@ -2,13 +2,18 @@ div {
     font-family: 'Arial', sans-serif;
 }
 
-.platform-background {
+.platform-background-food-item {
     background: linear-gradient(120deg, #f3eca1, #f5b657);
     margin: 0;
     padding: 0;
     padding-top: 50px;
     height: 300vh;
     animation: fadeIn 1s ease-in-out forwards;
+}
+
+.platform-background-food-item div {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes fadeIn {
@@ -20,6 +25,14 @@ div {
     }
 }
 
+.food-details-card {
+    height: 800px;
+    width: auto;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: row;
+}
+
 .food-detail-view {
     display: flex;
     flex-direction: column;
@@ -27,15 +40,26 @@ div {
     margin-right: 200px;
     margin-left: 200px;
     background-color: #f6f6f1;
+    max-width: 500px;
+    max-height: 1000px;
+    box-shadow: #ce7a1e 1px 1px 5px;
+    border-radius: 5px;
 }
 
 .large-image {
-    max-width: 400px; /* Set a max width for the image */
-    max-height: 300px; /* Set a max height for the image */
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    height: calc(100% / 2);
+    align-self: center;
     margin-bottom: 20px;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.large-price-overflow-container {
+    /*
+    width: 100%;
+    max-height: 500px;
+    overflow: hidden;
+     */
 }
 
 h1 {
@@ -66,3 +90,38 @@ h1 {
 }
 
 /* You can add more styles as required */
+
+.food-info-section {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.food-info-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: #333;
+    width: 100%;
+    text-align: center;
+}
+
+.food-info-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.food-info-true, .food-info-false {
+    width: 45%; /* adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.food-info-section p {
+    margin: 5px 0;
+    color: #555;
+}

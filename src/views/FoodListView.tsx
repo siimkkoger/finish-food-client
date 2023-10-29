@@ -14,6 +14,7 @@ import {CircularProgress} from "@mui/material";
 import {prettyTimeFormat} from "../utilities/Formatter";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import ImageWithFallback from "../components/ImageWithFallback";
 
 const FoodListView: React.FC = () => {
     const [foods, setFoods] = useState<GetFoodResponse[]>([]);
@@ -78,7 +79,7 @@ const FoodListView: React.FC = () => {
     }
 
     return (
-        <div className="platform-background">
+        <div className="platform-background-food-list">
             {
                 foods.length === 0 && !error && (
                     <div className="circularProgress">
@@ -93,6 +94,7 @@ const FoodListView: React.FC = () => {
                         <select
                             id="sortOrder"
                             value={sortOrder}
+                            onError={(e) => console.log(e)}
                             onChange={(e) => setSortOrder(e.target.value)}
                         >
                             <option value="default">Default</option>
@@ -136,7 +138,11 @@ const FoodListView: React.FC = () => {
                     {foods.map(food => (
                         <Link to={`/food/${food.foodId}`} key={food.foodId}>
                             <div className="food-card" key={food.foodId}>
-                                <img src={food.image} alt={food.name}/>
+                                <ImageWithFallback
+                                    src={food.image}
+                                    fallbackSrc="https://www.creativefabrica.com/wp-content/uploads/2021/08/12/Cartoon-fast-food-illustration-vector-Graphics-15801212-1-580x386.png"
+                                    alt="Descriptive Alt Text"
+                                />
                                 <div className="food-info">
                                     <h2>{food.name}</h2>
                                     <p className="food-price">${parseFloat(food.price).toFixed(2)}</p>
