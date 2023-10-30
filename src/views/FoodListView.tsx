@@ -34,8 +34,6 @@ const FoodListView: React.FC = () => {
     const [productProvidersState, setProductProvidersState] = useState<ProductProvider[]>([]);
     const [foodCategoriesState, setFoodCategoriesState] = useState<FoodCategory[]>([]);
     const [sortOrderState, setSortOrderState] = useState<string>(''); // You can define default value if needed
-    //let filterCategoryIds: number[] = [];
-    //let filterProviderIds: number[] = [];
     let [filterCategoryIdsState, setFilterCategoryIdsState] = useState<number[]>([]);
     let [filterProviderIdsState, setFilterProviderIdsState] = useState<number[]>([]);
 
@@ -43,22 +41,6 @@ const FoodListView: React.FC = () => {
     filter.productProviderIds = [...filterProviderIdsState];
 
     useEffect(() => {
-        const loadFoods = async () => {
-            if (sortOrderState === 'default' || sortOrderState === '') {
-                try {
-                    console.log(filterCategoryIdsState);
-                    console.log(filterProviderIdsState);
-                    const data = await fetchFoods(filter);
-                    // Simulate a slow network connection
-                    // setTimeout(() => setFoods(data), 400);
-                    setFoodsState(data);
-                } catch (e) {
-                    if (e instanceof Error) {
-                        setErrorState(e.message);
-                    }
-                }
-            }
-        };
         const loadProductProviders = async () => {
             try {
                 const data = await getProductProviders();
@@ -69,6 +51,10 @@ const FoodListView: React.FC = () => {
                 }
             }
         };
+        loadProductProviders();
+    }, []);
+
+    useEffect(() => {
         const loadFoodCategories = async () => {
             try {
                 const data = await getFoodCategories();
@@ -79,20 +65,35 @@ const FoodListView: React.FC = () => {
                 }
             }
         };
+        loadFoodCategories();
+    }, []);
 
-        if (sortOrderState === 'name') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => a.name.localeCompare(b.name)));
-        } else if (sortOrderState === 'price_asc') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
-        } else if (sortOrderState === 'price_desc') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
-        } else if (sortOrderState === 'default') {
-            setFoodsState([]);
-        }
+    useEffect(() => {
+        const loadFoods = async () => {
+            try {
+                const data = await fetchFoods(filter);
+                // Simulate a slow network connection
+                // setTimeout(() => setFoodsState(data), 300);
+                setFoodsState(data);
+
+                if (sortOrderState === 'name') {
+                    setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => a.name.localeCompare(b.name)));
+                } else if (sortOrderState === 'price_asc') {
+                    setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
+                } else if (sortOrderState === 'price_desc') {
+                    setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
+                } else if (sortOrderState === 'default') {
+                    setFoodsState([]);
+                }
+
+            } catch (e) {
+                if (e instanceof Error) {
+                    setErrorState(e.message);
+                }
+            }
+        };
 
         loadFoods();
-        loadProductProviders();
-        loadFoodCategories();
     }, [sortOrderState, filterCategoryIdsState, filterProviderIdsState]);
 
     const handleCategoryFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
