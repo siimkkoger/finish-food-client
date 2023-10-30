@@ -34,11 +34,6 @@ div {
     padding-bottom: 200px;
 }
 
-.foods-container a {
-    text-decoration: none;
-    color: inherit;
-}
-
 .food-description {
     margin-bottom: 10px;
     text-align: left;
@@ -52,7 +47,7 @@ div {
     border-radius: 8px;
     overflow: hidden;
     width: 260px; /* Set a width for the card, adjust as needed */
-    height: 380px;
+    height: 450px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 
@@ -126,16 +121,8 @@ div {
     padding-right: 40px;
     padding-top: 20px;
     padding-bottom: 50px;
-    width: 400px;
+    width: 250px;
     background: #ffffff;
-}
-
-.filter-container ul {
-    height: 300px; /* Set the height of the category list */
-    overflow-y: auto; /* Add vertical scrolling */
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0; /* Remove default margins */
 }
 
 .filter-container h3 {
@@ -143,6 +130,10 @@ div {
     margin-bottom: 10px;
 }
 
+.filter-container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
 
 .filter-container li {
     margin-bottom: 5px;
@@ -183,4 +174,55 @@ div {
     padding: 10px 15px;
     border-radius: 5px;
     border: 1px solid #e0e0e0;
+}
+
+
+
+/* Manager Provider Logo */
+.manager-logo {
+    max-width: 100px; /* Adjust as needed */
+    margin-bottom: 20px;
+}
+
+/* Add New Food Button */
+.add-new-food-btn {
+    background-color: #e85d04;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #d54b03;
+    }
+}
+
+/* Edit and Delete Buttons inside each card */
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.edit-btn, .delete-btn {
+    background-color: #e85d04;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #d54b03;
+    }
+}
+
+.delete-btn {
+    background-color: #d9534f; /* Different color for delete */
 }

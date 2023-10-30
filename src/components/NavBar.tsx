@@ -38,7 +38,7 @@ const NavBar: React.FC = () => {
                 <div className="NavBar-logo">Your Logo</div>
                 <Link to="/" className="NavBar-link">Home</Link>
                 <Link to="/food" className="NavBar-link">Foods</Link>
-                <Link to="/product/:productId" className="NavBar-link">Product</Link>
+                <Link to="/food/manage" className="NavBar-link">Manage Food</Link>
                 <Link to="/cart" className="NavBar-link">Cart</Link>
 
                 {/* Search bar and dropdown container */}

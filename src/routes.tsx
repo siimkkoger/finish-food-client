@@ -8,6 +8,8 @@ import CartPage from './views/CartPage';
 import NotFoundPage from './views/NotFoundPage';
 import NavBar from "./components/NavBar";
 import FoodDetailView from "./views/FoodDetailView";
+import FoodsManageView from "./manage-foods/FoodsManageView";
+import AddFoodView from "./manage-foods/AddFoodView";
 
 const RoutesComponent: React.FC = () => {
     return (
@@ -19,6 +21,8 @@ const RoutesComponent: React.FC = () => {
                 <Route path="/cart" element={<CartPage/>}/>
                 <Route path="/food" element={<FoodListView/>}/>
                 <Route path="/food/:id" element={<FoodDetailView/>} />
+                <Route path="/food/manage" element={<FoodsManageView/>}/>
+                <Route path="/food/add" element={<AddFoodView/>}/>
 
                 {/* 404 - Not Found route */}
                 <Route path="*" element={<NotFoundPage/>}/>

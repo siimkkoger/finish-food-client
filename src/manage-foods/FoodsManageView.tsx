@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import './FoodListView.css';
+import './FoodsManageView.css';
 import {
     DEFAULT_FILTER,
     fetchFoods,
     FoodCategory, getFoodCategories,
-    GetFoodResponse, GetFoodsFilter,
+    GetFoodResponse,
     getProductProviders,
     ProductProvider
 } from "../api/FoodApi";
-import ErrorView from "./ErrorView";
+import ErrorView from "../views/ErrorView";
 import {Link} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
 import {prettyTimeFormat} from "../utilities/Formatter";
@@ -16,45 +16,34 @@ import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import ImageWithFallback from "../components/ImageWithFallback";
 
-let filter: GetFoodsFilter = {
-    foodCategoryIds: [],
-    foodCategoryIdsMatchAll: true,
-    productProviderIds: [],
-    pickupTimeFrom: undefined,
-    pickupTimeTo: undefined,
-    page: 1,
-    pageSize: 100,
-    orderBy: 'CREATED_AT',
-    direction: 'ASC',
-};
-
-const FoodListView: React.FC = () => {
-    const [foodsState, setFoodsState] = useState<GetFoodResponse[]>([]);
-    const [errorState, setErrorState] = useState<string | null>(null);
-    const [productProvidersState, setProductProvidersState] = useState<ProductProvider[]>([]);
-    const [foodCategoriesState, setFoodCategoriesState] = useState<FoodCategory[]>([]);
-    const [sortOrderState, setSortOrderState] = useState<string>(''); // You can define default value if needed
-    //let filterCategoryIds: number[] = [];
-    //let filterProviderIds: number[] = [];
-    let [filterCategoryIdsState, setFilterCategoryIdsState] = useState<number[]>([]);
-    let [filterProviderIdsState, setFilterProviderIdsState] = useState<number[]>([]);
-
-    filter.foodCategoryIds = [...filterCategoryIdsState];
-    filter.productProviderIds = [...filterProviderIdsState];
+const FoodsManageView: React.FC = () => {
+    const managerInfo = {
+        id: "1",
+        name: "Mcdonalds"
+    };
+    const [foods, setFoods] = useState<GetFoodResponse[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [productProviders, setProductProviders] = useState<ProductProvider[]>([]);
+    const [foodCategories, setFoodCategories] = useState<FoodCategory[]>([]);
+    const [sortOrder, setSortOrder] = useState<string>(''); // You can define default value if needed
 
     useEffect(() => {
         const loadFoods = async () => {
-            if (sortOrderState === 'default' || sortOrderState === '') {
+            if (sortOrder === 'default' || sortOrder === '') {
                 try {
-                    console.log(filterCategoryIdsState);
-                    console.log(filterProviderIdsState);
+                    let filter = {
+                        page: 1,
+                        pageSize: 100,
+                        orderBy: 'CREATED_AT',
+                        direction: 'ASC',
+                        productProviderName: managerInfo.name
+                    };
                     const data = await fetchFoods(filter);
                     // Simulate a slow network connection
-                    // setTimeout(() => setFoods(data), 400);
-                    setFoodsState(data);
+                    setTimeout(() => setFoods(data), 400);
                 } catch (e) {
                     if (e instanceof Error) {
-                        setErrorState(e.message);
+                        setError(e.message);
                     }
                 }
             }
@@ -62,70 +51,48 @@ const FoodListView: React.FC = () => {
         const loadProductProviders = async () => {
             try {
                 const data = await getProductProviders();
-                setProductProvidersState(data);
+                setProductProviders(data);
             } catch (e) {
                 if (e instanceof Error) {
-                    setErrorState(e.message);
+                    setError(e.message);
                 }
             }
         };
         const loadFoodCategories = async () => {
             try {
                 const data = await getFoodCategories();
-                setFoodCategoriesState(data);
+                setFoodCategories(data);
             } catch (e) {
                 if (e instanceof Error) {
-                    setErrorState(e.message);
+                    setError(e.message);
                 }
             }
         };
 
-        if (sortOrderState === 'name') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => a.name.localeCompare(b.name)));
-        } else if (sortOrderState === 'price_asc') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
-        } else if (sortOrderState === 'price_desc') {
-            setFoodsState((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
-        } else if (sortOrderState === 'default') {
-            setFoodsState([]);
+        if (sortOrder === 'name') {
+            setFoods((prevFoods) => [...prevFoods].sort((a, b) => a.name.localeCompare(b.name)));
+        } else if (sortOrder === 'price_asc') {
+            setFoods((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
+        } else if (sortOrder === 'price_desc') {
+            setFoods((prevFoods) => [...prevFoods].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
+        } else if (sortOrder === 'default') {
+            setFoods([]);
+            console.log(foods.length);
         }
-
         loadFoods();
         loadProductProviders();
         loadFoodCategories();
-    }, [sortOrderState, filterCategoryIdsState, filterProviderIdsState]);
-
-    const handleCategoryFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {checked, id} = event.target;
-        setFilterCategoryIdsState(prevState => {
-            if (checked) {
-                return [...prevState, parseInt(id)]; // Adding id
-            } else {
-                return prevState.filter(categoryId => categoryId !== parseInt(id)); // Removing id
-            }
-        });
-    };
-
-    const handleProviderFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {checked, id} = event.target;
-        setFilterProviderIdsState(prevState => {
-            if (checked) {
-                return [...prevState, parseInt(id)]; // Adding id
-            } else {
-                return prevState.filter(providerId => providerId !== parseInt(id)); // Removing id
-            }
-        });
-    }
+    }, [sortOrder]);
 
 
-    if (errorState) {
-        return <ErrorView message={errorState}/>;
+    if (error) {
+        return <ErrorView message={error}/>;
     }
 
     return (
         <div className="platform-background-food-list">
             {
-                foodsState.length === 0 && !errorState && (
+                foods.length === 0 && !error && (
                     <div className="circularProgress">
                         <CircularProgress/>
                     </div>
@@ -133,13 +100,25 @@ const FoodListView: React.FC = () => {
             }
             <div className="product-list-container">
                 <div className="filter-container">
+                    {/* Manager Provider Logo */}
+                    <div className="logo-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/McDonald%27s_logo.svg/1280px-McDonald%27s_logo.svg.png"
+                             alt="Manager Logo"
+                             className="manager-logo" />
+                    </div>
+
+                    {/* Add New Food Button */}
+                    <button className="add-new-food-btn">
+                        <Link to="/food/add" className="NavBar-link">Add New Food</Link>
+                    </button>
+
                     <h3>Order by</h3>
                     <div className="sort-container">
                         <select
                             id="sortOrder"
-                            value={sortOrderState}
+                            value={sortOrder}
                             onError={(e) => console.log(e)}
-                            onChange={(e) => setSortOrderState(e.target.value)}
+                            onChange={(e) => setSortOrder(e.target.value)}
                         >
                             <option value="default">Default</option>
                             <option value="name">Name (A/Z)</option>
@@ -151,27 +130,14 @@ const FoodListView: React.FC = () => {
                     <h3>Filter by Categories</h3>
                     <ul>
                         {
-                            foodCategoriesState.map(category => (
+                            foodCategories.map(category => (
                                 <li key={category.id}>
-                                    <input type="checkbox" id={category.id.toString()}
-                                           onChange={handleCategoryFilterChange}/>
+                                    <input type="checkbox" id={category.name}/>
                                     <label htmlFor={category.name}>{category.name}</label>
                                 </li>
                             ))
                         }
-                    </ul>
-
-                    <h3>Filter by Provider</h3>
-                    <ul>
-                        {
-                            productProvidersState.map(provider => (
-                                <li key={provider.id}>
-                                    <input type="checkbox" id={provider.id.toString()}
-                                           onChange={handleProviderFilterChange}/>
-                                    <label htmlFor={provider.name}>{provider.name}</label>
-                                </li>
-                            ))
-                        }
+                        <li><input type="checkbox" id="vegan"/><label htmlFor="vegan">Vegan</label></li>
                     </ul>
 
                     <h3>Filter by Pickup Time</h3>
@@ -180,7 +146,7 @@ const FoodListView: React.FC = () => {
                     </LocalizationProvider>
                 </div>
                 <div className="foods-container"> {/* Wrap foods in a container */}
-                    {foodsState.map(food => (
+                    {foods.map(food => (
                         <Link to={`/food/${food.foodId}`} key={food.foodId}>
                             <div className="food-card" key={food.foodId}>
                                 <ImageWithFallback
@@ -199,6 +165,11 @@ const FoodListView: React.FC = () => {
                                         <p><span role="img">🏢</span> {food.productProviderName}</p>
                                     </div>
                                 </div>
+                                {/* Edit and Delete Buttons */}
+                                <div className="card-buttons">
+                                    <button className="edit-btn">Edit</button>
+                                    <button className="delete-btn">Delete</button>
+                                </div>
                             </div>
                         </Link>
                     ))}
@@ -208,4 +179,4 @@ const FoodListView: React.FC = () => {
     );
 };
 
-export default FoodListView;
+export default FoodsManageView;

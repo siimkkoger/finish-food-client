@@ -58,9 +58,10 @@ export const getFoodCategories = async (): Promise<FoodCategory[]> => {
     }
 }
 
-type GetFoodsFilter = {
-    foodCategoryIds?: Set<number>;
-    productProviderName?: string;
+export type GetFoodsFilter = {
+    foodCategoryIds?: number[];
+    foodCategoryIdsMatchAll?: boolean;
+    productProviderIds?: number[];
     pickupTimeFrom?: string; // Convert this to string in YYYY-MM-DDTHH:MM:SS format when using
     pickupTimeTo?: string;  // Convert this to string in YYYY-MM-DDTHH:MM:SS format when using
     page?: number;

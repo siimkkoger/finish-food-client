@@ -1,0 +1,55 @@
+.add-food-form-container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.add-food-form .form-group {
+    margin-bottom: 20px;
+}
+
+.add-food-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.add-food-form input[type="text"],
+.add-food-form input[type="datetime-local"],
+.add-food-form select,
+.add-food-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Added this line to include padding in element's total width and height */
+}
+
+.add-food-form input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.add-food-form .form-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-food-form .submit-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.add-food-form .submit-btn:hover {
+    background-color: #45a049;
+}
