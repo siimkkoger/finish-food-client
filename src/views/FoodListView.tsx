@@ -51,15 +51,11 @@ const FoodListView: React.FC = () => {
     const [isSticky, setIsSticky] = useState(false);
     const foodContainerRef = useRef<HTMLDivElement>(null);
 
-    console.log("--------------- before method declarations -----------------")
     useEffect(() => {
-        console.log("--------------- inside useEffect 1 -----------------")
         const loadProductProviders = async () => {
             try {
-                console.log("--------------- inside loadProductProviders -----------------")
                 const data = await getProductProviders();
                 setProductProvidersState(data);
-                console.log("--------------- after setProductProvidersState -----------------")
             } catch (e) {
                 if (e instanceof Error) {
                     setErrorState(e.message);
@@ -70,10 +66,8 @@ const FoodListView: React.FC = () => {
 
         const loadFoodCategories = async () => {
             try {
-                console.log("--------------- inside loadFoodCategories -----------------")
                 const data = await getFoodCategories();
                 setFoodCategoriesState(data);
-                console.log("--------------- after setFoodCategoriesState -----------------")
             } catch (e) {
                 if (e instanceof Error) {
                     setErrorState(e.message);
@@ -84,7 +78,6 @@ const FoodListView: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        console.log("--------------- inside useEffect 2 -----------------")
         const handleSidebarStickiness = () => {
             const navbarHeight = 60;
             setIsSticky(window.scrollY > navbarHeight);
@@ -119,17 +112,14 @@ const FoodListView: React.FC = () => {
     }, [fetchingFoodState]);
 
     useEffect(() => {
-        console.log("--------------- inside useEffect 3 -----------------")
         setCurrentPageState(1);
         setFoodsState([]);
         setFetchingFoodState(true);
         setMoreFoodsAvailableState(true);
-        console.log("Scrolling to top...")
         window.scrollTo({top: 0, behavior: 'smooth'});
     }, [sortOrderState, filterCategoryIdsState, filterProviderIdsState, filterPickupTimeFromState, filterPickupTimeToState]);
 
     useEffect(() => {
-        console.log("--------------- inside useEffect 4 -----------------")
         const setupFilterBeforeFetchingFoods = () => {
             const orderConfig: { [key: string]: { orderBy: OrderBy, direction: string } } = {
                 name: {orderBy: OrderBy.NAME, direction: 'ASC'},
@@ -153,14 +143,12 @@ const FoodListView: React.FC = () => {
 
         const loadFoods = async () => {
             try {
-                console.log("--------------- inside loadFoods -----------------")
                 const data = await fetchFoods({...filter, page: currentPageState, pageSize: PAGE_SIZE});
                 if (data.length < PAGE_SIZE) {
                     setMoreFoodsAvailableState(false);
                 } else {
                     setMoreFoodsAvailableState(true);
                 }
-                console.log("--------------- after loadFoods -----------------")
                 setFoodsState(prevFoods => currentPageState === 1 ? data : [...prevFoods, ...data]);
                 setFetchingFoodState(false);
                 setInitialLoadDoneState(true);
@@ -173,9 +161,6 @@ const FoodListView: React.FC = () => {
             }
         };
 
-        console.log("---------------load foods -----------------")
-        console.log("Fetching food state: " + fetchingFoodState)
-        console.log("More foods available state: " + moreFoodsAvailableState)
         if (moreFoodsAvailableState && !fetchingFoodState) {
             setupFilterBeforeFetchingFoods();
             loadFoods();
@@ -197,9 +182,9 @@ const FoodListView: React.FC = () => {
         const {checked, id} = event.target;
         setFilterCategoryIdsState(prevState => {
             if (checked) {
-                return [...prevState, parseInt(id)]; // Adding id
+                return [...prevState, parseInt(id)];
             } else {
-                return prevState.filter(categoryId => categoryId !== parseInt(id)); // Removing id
+                return prevState.filter(categoryId => categoryId !== parseInt(id));
             }
         });
     };
@@ -208,9 +193,9 @@ const FoodListView: React.FC = () => {
         const {checked, id} = event.target;
         setFilterProviderIdsState(prevState => {
             if (checked) {
-                return [...prevState, parseInt(id)]; // Adding id
+                return [...prevState, parseInt(id)];
             } else {
-                return prevState.filter(providerId => providerId !== parseInt(id)); // Removing id
+                return prevState.filter(providerId => providerId !== parseInt(id));
             }
         });
     }
