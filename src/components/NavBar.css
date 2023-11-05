@@ -1,6 +1,8 @@
 /* Existing styles */
 
 .NavBar {
+    height: 50px;
+    line-height: 40px;
     background-color: #131921;
     padding: 0.5rem 1rem;
 }

@@ -8,7 +8,7 @@ div {
 .platform-background-food-list {
     background: linear-gradient(120deg, #f3eca1, #f5b657);
     margin: 0;
-    height: 300vh;
+    height: 100%;
     animation: fadeIn 1s ease-in-out forwards;
 }
 
@@ -21,17 +21,84 @@ div {
     }
 }
 
+.circularProgress {
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
 
-/* Food cards container */
+    width: 100%; /* Takes full width to center the spinner */
+    display: flex; /* Uses flex to center the spinner horizontally */
+    justify-content: center;
+}
+
+.no-more-foods {
+    width: 100%; /* Takes up the full width of the container */
+    text-align: center; /* Centers the text horizontally */
+    padding: 16px; /* Adds some padding for visual spacing */
+    box-sizing: border-box; /* Ensures padding doesn't add to the width */
+    flex-basis: 100%; /* For flexbox containers, this makes the item take up 100% of the flex container's width */
+}
+
+.product-list-container {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    padding: 50px 16px;
+}
+
+.filter-container {
+    position: inherit;
+    margin-top: 0px;
+
+    flex-grow: 0; /* Do not allow it to grow */
+    flex-shrink: 0; /* Prevents the container from shrinking below its content size */
+    flex-basis: 250px;
+
+    border: 1px solid #dcdcdc;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    width: 250px;
+    background: #ffffff;
+}
+
+.filter-container ul {
+    height: 250px; /* Set the height of the category list */
+    overflow-y: auto; /* Add vertical scrolling */
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0; /* Remove default margins */
+}
+
+.filter-container h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+
+.filter-container li {
+    margin-bottom: 5px;
+}
+
+.filter-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
 .foods-container {
+    margin-left: 0px;
+    flex-grow: 3;
     display: flex;
     flex-wrap: wrap;
     gap: 16px; /* space between cards */
-    justify-content: center;
+    justify-content: start;
     align-items: baseline;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 70px;
+
+    /*
     padding-bottom: 200px;
+     */
 }
 
 .foods-container a {
@@ -45,13 +112,12 @@ div {
     height: 50px;
 }
 
-/* Individual food card styling */
 .food-card {
-    background-color: #ffffff; /* white background */
+    background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
-    width: 260px; /* Set a width for the card, adjust as needed */
+    width: 260px;
     height: 380px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
@@ -89,7 +155,7 @@ div {
     font-size: 1.2rem;
     font-weight: bold;
     margin-top: 4px;
-    color: #f3a847; /* Use the color from the search button for consistency */
+    color: #f3a847;
 }
 
 /* Food details with icons */
@@ -103,71 +169,13 @@ div {
 .food-details p {
     display: flex;
     align-items: center;
-    gap: 8px; /* space between icon and text */
+    gap: 8px;
 }
 
-/* Just an aesthetic touch for icons */
 .food-details span {
     font-size: 1.1rem;
 }
 
-.circularProgress {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -12px;
-    margin-left: -12px;
-}
-
-/* Filter component styling */
-.filter-container {
-    border: 1px solid #dcdcdc;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 20px;
-    padding-bottom: 50px;
-    width: 400px;
-    background: #ffffff;
-}
-
-.filter-container ul {
-    height: 300px; /* Set the height of the category list */
-    overflow-y: auto; /* Add vertical scrolling */
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0; /* Remove default margins */
-}
-
-.filter-container h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-
-.filter-container li {
-    margin-bottom: 5px;
-}
-
-.filter-container input[type="checkbox"] {
-    margin-right: 5px;
-}
-
-
-/* Product list container styling */
-.product-list-container {
-    display: flex;
-    justify-content: start;
-    align-items: flex-start;
-    padding: 50px 16px;
-}
-
-.list-container {
-    flex-grow: 1;
-    width: calc(100% - 270px); /* 100% minus the filter width and its margin */
-    padding-left: 20px; /* spacing between filter and list */
-}
-
-/* Styling sort dropdown */
 .sort-container {
     display: flex;
     align-items: center;
@@ -183,4 +191,22 @@ div {
     padding: 10px 15px;
     border-radius: 5px;
     border: 1px solid #e0e0e0;
+}
+
+
+/* Clear Pickup Time Button Styling */
+.clear-pickup-time-button {
+    margin-top: 20px; /* Spacing from the last element */
+    padding: 10px 20px; /* Padding inside the button */
+    border: none; /* Removes the default border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f5b657; /* Background color */
+    color: white; /* Text color */
+    font-weight: bold; /* Makes the text bold */
+    cursor: pointer; /* Changes cursor on hover */
+    transition: background-color 0.2s; /* Smoothens the color transition */
+}
+
+.clear-pickup-time-button:hover {
+    background-color: #f3eca1; /* Lighter color on hover */
 }

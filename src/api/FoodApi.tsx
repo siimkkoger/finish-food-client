@@ -78,6 +78,14 @@ export const DEFAULT_FILTER: GetFoodsFilter = {
     direction: 'ASC'
 };
 
+export enum OrderBy {
+    ID = 'ID',
+    NAME = 'NAME',
+    PRICE = 'PRICE',
+    PICKUP_TIME = 'PICKUP_TIME',
+    CREATED_AT = 'CREATED_AT'
+}
+
 export type GetFoodResponse = {
     foodId: number;
     name: string;
