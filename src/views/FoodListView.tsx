@@ -32,14 +32,16 @@ let filter: GetFoodsFilter = {
 
 const FoodListView: React.FC = () => {
     const navbarHeight = 105;
+    const foodContainerRef = useRef<HTMLDivElement>(null);
 
+    // Food states
     const [foodsState, setFoodsState] = useState<GetFoodResponse[]>([]);
     const [fetchingFoodState, setFetchingFoodState] = useState<boolean>(false);
     const [currentPageState, setCurrentPageState] = useState(1);
     const [moreFoodsAvailableState, setMoreFoodsAvailableState] = useState<boolean>(true);
     const [initialLoadDoneState, setInitialLoadDoneState] = useState<boolean>(false);
 
-    const [errorState, setErrorState] = useState<string | null>(null);
+    // Filter states
     const [productProvidersState, setProductProvidersState] = useState<ProductProvider[]>([]);
     const [foodCategoriesState, setFoodCategoriesState] = useState<FoodCategory[]>([]);
     const [sortOrderState, setSortOrderState] = useState<string>(''); // You can define default value if needed
@@ -47,40 +49,30 @@ const FoodListView: React.FC = () => {
     const [filterProviderIdsState, setFilterProviderIdsState] = useState<number[]>([]);
     const [filterPickupTimeFromState, setFilterPickupTimeFromState] = useState<Date | null>(null);
     const [filterPickupTimeToState, setFilterPickupTimeToState] = useState<Date | null>(null);
+    const [filterSectionIsStickyState, setFilterSectionIsStickyState] = useState(false);
 
-    const [isSticky, setIsSticky] = useState(false);
-    const foodContainerRef = useRef<HTMLDivElement>(null);
+    // Error state
+    const [errorState, setErrorState] = useState<string | null>(null);
+
 
     useEffect(() => {
-        const loadProductProviders = async () => {
+        (async () => {
             try {
-                const data = await getProductProviders();
-                setProductProvidersState(data);
+                const [productProvidersData, foodCategoriesData] = await Promise.all([getProductProviders(), getFoodCategories()]);
+                setProductProvidersState(productProvidersData);
+                setFoodCategoriesState(foodCategoriesData);
             } catch (e) {
                 if (e instanceof Error) {
                     setErrorState(e.message);
                 }
             }
-        };
-        loadProductProviders();
-
-        const loadFoodCategories = async () => {
-            try {
-                const data = await getFoodCategories();
-                setFoodCategoriesState(data);
-            } catch (e) {
-                if (e instanceof Error) {
-                    setErrorState(e.message);
-                }
-            }
-        };
-        loadFoodCategories();
+        })();
     }, []);
 
     useEffect(() => {
         const handleSidebarStickiness = () => {
             const navbarHeight = 60;
-            setIsSticky(window.scrollY > navbarHeight);
+            setFilterSectionIsStickyState(window.scrollY > navbarHeight);
         };
 
         const handleInfiniteScrolling = () => {
@@ -120,6 +112,8 @@ const FoodListView: React.FC = () => {
     }, [sortOrderState, filterCategoryIdsState, filterProviderIdsState, filterPickupTimeFromState, filterPickupTimeToState]);
 
     useEffect(() => {
+        if (!moreFoodsAvailableState || fetchingFoodState) return;
+
         const setupFilterBeforeFetchingFoods = () => {
             const orderConfig: { [key: string]: { orderBy: OrderBy, direction: string } } = {
                 name: {orderBy: OrderBy.NAME, direction: 'ASC'},
@@ -143,31 +137,22 @@ const FoodListView: React.FC = () => {
 
         const loadFoods = async () => {
             try {
-                const data = await fetchFoods({...filter, page: currentPageState, pageSize: PAGE_SIZE});
-                if (data.length < PAGE_SIZE) {
-                    setMoreFoodsAvailableState(false);
-                } else {
-                    setMoreFoodsAvailableState(true);
-                }
-                setFoodsState(prevFoods => currentPageState === 1 ? data : [...prevFoods, ...data]);
-                setFetchingFoodState(false);
-                setInitialLoadDoneState(true);
+                const data = await fetchFoods({ ...filter, page: currentPageState, pageSize: PAGE_SIZE });
+                setMoreFoodsAvailableState(data.length === PAGE_SIZE);
+                setFoodsState((prevFoods) => (currentPageState === 1 ? data : [...prevFoods, ...data]));
             } catch (e) {
                 if (e instanceof Error) {
                     setErrorState(e.message);
                 }
+            } finally {
                 setFetchingFoodState(false);
                 setInitialLoadDoneState(true);
             }
         };
 
-        if (moreFoodsAvailableState && !fetchingFoodState) {
-            setupFilterBeforeFetchingFoods();
-            loadFoods();
-        }
+        setupFilterBeforeFetchingFoods();
+        loadFoods();
     }, [
-        //productProvidersState,
-        //foodCategoriesState,
         moreFoodsAvailableState,
         fetchingFoodState,
         currentPageState,
@@ -217,9 +202,9 @@ const FoodListView: React.FC = () => {
             <div className="product-list-container">
                 <div className="filter-container"
                      style={{
-                         top: isSticky ? '0px' : navbarHeight + 'px',
-                         position: isSticky ? 'fixed' : 'inherit',
-                         marginTop: isSticky ? '10px' : '0px'
+                         top: filterSectionIsStickyState ? '0px' : navbarHeight + 'px',
+                         position: filterSectionIsStickyState ? 'fixed' : 'inherit',
+                         marginTop: filterSectionIsStickyState ? '10px' : '0px'
                      }}>
                     <h3>Order by</h3>
                     <div className="sort-container">
@@ -283,7 +268,7 @@ const FoodListView: React.FC = () => {
                 </div>
 
                 <div className="foods-container" ref={foodContainerRef}
-                     style={{marginLeft: isSticky ? '330px' : '0px'}}>
+                     style={{marginLeft: filterSectionIsStickyState ? '330px' : '0px'}}>
                     {foodsState.length > 0 && foodsState.map(food => (
                         <Link to={`/food/${food.foodId}`} key={food.foodId}>
                             <div className="food-card" key={food.foodId}>
