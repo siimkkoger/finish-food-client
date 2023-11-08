@@ -3,7 +3,7 @@ import axios from 'axios';
 const BASE_URL_FOOD = 'http://localhost:8080/api/food';
 const BASE_URL_PRODUCT = 'http://localhost:8080/api/product';
 
-export const fetchFoods = async (filter: GetFoodsFilter): Promise<GetFoodResponse[]> => {
+export const fetchFoods = async (filter: GetFoodsFilter): Promise<GetFoodListResponse> => {
     try {
         const response = await axios.post(`${BASE_URL_FOOD}/get-foods`, filter);
         return response.data;
@@ -101,4 +101,12 @@ export type GetFoodResponse = {
     pickupTime: string;
     productType: string;
     productProviderName: string;
+};
+
+export type GetFoodListResponse = {
+    foods: GetFoodResponse[];
+    totalItems: number;
+    totalPages: number;
+    page: number;
+    pageSize: number;
 };

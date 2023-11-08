@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useReducer} from 'react';
 import './FoodListView.css';
 import {
     fetchFoods,
@@ -16,18 +16,63 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import ImageWithFallback from "../components/ImageWithFallback";
 
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 15;
 
-let filter: GetFoodsFilter = {
-    foodCategoryIds: [],
-    foodCategoryIdsMatchAll: true,
-    productProviderIds: [],
-    pickupTimeFrom: undefined,
-    pickupTimeTo: undefined,
-    page: 1,
-    pageSize: PAGE_SIZE,
-    orderBy: 'CREATED_AT',
-    direction: 'ASC',
+interface FoodListState {
+    foods: GetFoodResponse[];
+    foodIsToBeFetched: boolean;
+    fetchingFood: boolean;
+    currentPage: number;
+    totalItems: number;
+    totalPages: number;
+}
+
+const READY_TO_FETCH = 'READY_TO_FETCH';
+const FETCHING_FOODS = 'FETCHING_FOODS';
+const FOODS_FETCHED = 'FOODS_FETCHED';
+const RESET = 'RESET';
+
+type Action =
+    | {
+    type: typeof FOODS_FETCHED;
+    foods: GetFoodResponse[];
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+}
+    | { type: typeof READY_TO_FETCH }
+    | { type: typeof FETCHING_FOODS }
+    | { type: typeof RESET };
+
+const foodListStateReducer = (state: FoodListState, action: Action): FoodListState => {
+    switch (action.type) {
+        case READY_TO_FETCH:
+            return {...state, foodIsToBeFetched: true};
+        case FETCHING_FOODS:
+            return {...state, foodIsToBeFetched: false, fetchingFood: true};
+        case FOODS_FETCHED:
+            return {
+                ...state,
+                foodIsToBeFetched: false,
+                fetchingFood: false,
+                foods: action.foods,
+                currentPage: action.page,
+                totalItems: action.totalItems,
+                totalPages: action.totalPages,
+            };
+        case RESET:
+            return {
+                foods: [],
+                foodIsToBeFetched: true,
+                fetchingFood: false,
+                currentPage: 0,
+                totalItems: Number.MAX_SAFE_INTEGER,
+                totalPages: Number.MAX_SAFE_INTEGER,
+            };
+        default:
+            return state;
+    }
 };
 
 const FoodListView: React.FC = () => {
@@ -35,16 +80,19 @@ const FoodListView: React.FC = () => {
     const foodContainerRef = useRef<HTMLDivElement>(null);
 
     // Food states
-    const [foodsState, setFoodsState] = useState<GetFoodResponse[]>([]);
-    const [fetchingFoodState, setFetchingFoodState] = useState<boolean>(false);
-    const [currentPageState, setCurrentPageState] = useState(1);
-    const [moreFoodsAvailableState, setMoreFoodsAvailableState] = useState<boolean>(true);
-    const [initialLoadDoneState, setInitialLoadDoneState] = useState<boolean>(false);
+    const [foodListState, dispatch] = useReducer(foodListStateReducer, {
+        foods: [],
+        foodIsToBeFetched: true,
+        fetchingFood: false,
+        currentPage: 0,
+        totalItems: Number.MAX_SAFE_INTEGER,
+        totalPages: Number.MAX_SAFE_INTEGER,
+    });
 
     // Filter states
+    const [sortOrderState, setSortOrderState] = useState<string>('');
     const [productProvidersState, setProductProvidersState] = useState<ProductProvider[]>([]);
     const [foodCategoriesState, setFoodCategoriesState] = useState<FoodCategory[]>([]);
-    const [sortOrderState, setSortOrderState] = useState<string>(''); // You can define default value if needed
     const [filterCategoryIdsState, setFilterCategoryIdsState] = useState<number[]>([]);
     const [filterProviderIdsState, setFilterProviderIdsState] = useState<number[]>([]);
     const [filterPickupTimeFromState, setFilterPickupTimeFromState] = useState<Date | null>(null);
@@ -58,7 +106,10 @@ const FoodListView: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-                const [productProvidersData, foodCategoriesData] = await Promise.all([getProductProviders(), getFoodCategories()]);
+                const [productProvidersData, foodCategoriesData] = await Promise.all([
+                    getProductProviders(),
+                    getFoodCategories(),
+                ]);
                 setProductProvidersState(productProvidersData);
                 setFoodCategoriesState(foodCategoriesData);
             } catch (e) {
@@ -76,7 +127,7 @@ const FoodListView: React.FC = () => {
         };
 
         const handleInfiniteScrolling = () => {
-            if (fetchingFoodState) return;
+            if (foodListState.fetchingFood) return;
 
             const scrolledDistanceFromTop = window.scrollY;
             const viewportHeight = window.innerHeight;
@@ -85,8 +136,7 @@ const FoodListView: React.FC = () => {
             const threshold = 300;
 
             if (totalScrolledHeight >= foodContainerHeight - threshold) {
-                setCurrentPageState((currentPageState) => currentPageState + 1);
-                setFetchingFoodState(true);
+                dispatch({type: READY_TO_FETCH});
             }
         };
 
@@ -101,18 +151,31 @@ const FoodListView: React.FC = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [fetchingFoodState]);
+    }, [foodListState.fetchingFood]);
 
     useEffect(() => {
-        setCurrentPageState(1);
-        setFoodsState([]);
-        setFetchingFoodState(true);
-        setMoreFoodsAvailableState(true);
+        dispatch({type: RESET});
         window.scrollTo({top: 0, behavior: 'smooth'});
     }, [sortOrderState, filterCategoryIdsState, filterProviderIdsState, filterPickupTimeFromState, filterPickupTimeToState]);
 
+    const moreFoodsAreAvailable = () => {
+        return foodListState.totalPages > foodListState.currentPage;
+    }
+
     useEffect(() => {
-        if (!moreFoodsAvailableState || fetchingFoodState) return;
+        if (!moreFoodsAreAvailable() || !foodListState.foodIsToBeFetched) return;
+
+        let filter: GetFoodsFilter = {
+            foodCategoryIds: [],
+            foodCategoryIdsMatchAll: true,
+            productProviderIds: [],
+            pickupTimeFrom: undefined,
+            pickupTimeTo: undefined,
+            page: 1,
+            pageSize: PAGE_SIZE,
+            orderBy: 'CREATED_AT',
+            direction: 'ASC',
+        };
 
         const setupFilterBeforeFetchingFoods = () => {
             const orderConfig: { [key: string]: { orderBy: OrderBy, direction: string } } = {
@@ -133,29 +196,34 @@ const FoodListView: React.FC = () => {
             // Setting up category and provider IDs
             filter.foodCategoryIds = filterCategoryIdsState;
             filter.productProviderIds = filterProviderIdsState;
+
+            // Setting up page number
+            filter.page = foodListState.currentPage + 1;
         }
 
         const loadFoods = async () => {
             try {
-                const data = await fetchFoods({ ...filter, page: currentPageState, pageSize: PAGE_SIZE });
-                setMoreFoodsAvailableState(data.length === PAGE_SIZE);
-                setFoodsState((prevFoods) => (currentPageState === 1 ? data : [...prevFoods, ...data]));
+                dispatch({type: FETCHING_FOODS});
+                const data = await fetchFoods(filter);
+                dispatch({
+                    type: FOODS_FETCHED,
+                    foods: [...foodListState.foods, ...data.foods],
+                    page: data.page,
+                    pageSize: data.pageSize,
+                    totalItems: data.totalItems,
+                    totalPages: data.totalPages
+                });
             } catch (e) {
                 if (e instanceof Error) {
                     setErrorState(e.message);
                 }
-            } finally {
-                setFetchingFoodState(false);
-                setInitialLoadDoneState(true);
             }
         };
 
         setupFilterBeforeFetchingFoods();
         loadFoods();
     }, [
-        moreFoodsAvailableState,
-        fetchingFoodState,
-        currentPageState,
+        foodListState.foodIsToBeFetched,
         sortOrderState,
         filterCategoryIdsState,
         filterProviderIdsState,
@@ -269,7 +337,7 @@ const FoodListView: React.FC = () => {
 
                 <div className="foods-container" ref={foodContainerRef}
                      style={{marginLeft: filterSectionIsStickyState ? '330px' : '0px'}}>
-                    {foodsState.length > 0 && foodsState.map(food => (
+                    {foodListState.foods.length > 0 && foodListState.foods.map(food => (
                         <Link to={`/food/${food.foodId}`} key={food.foodId}>
                             <div className="food-card" key={food.foodId}>
                                 <ImageWithFallback
@@ -292,20 +360,20 @@ const FoodListView: React.FC = () => {
                         </Link>
                     ))}
                     {
-                        fetchingFoodState && (
+                        foodListState.fetchingFood && (
                             <div className="circularProgress">
                                 <CircularProgress/>
                             </div>
                         )
                     }
                     {
-                        !moreFoodsAvailableState && foodsState.length !== 0 && (
+                        !moreFoodsAreAvailable() && foodListState.foods.length !== 0 && (
                             <div className="no-more-foods">
                                 <h1>No more foods available.</h1>
                             </div>
                         )
                     }
-                    {initialLoadDoneState && foodsState.length === 0 && !fetchingFoodState && (
+                    {foodListState.foods.length === 0 && !foodListState.fetchingFood && (
                         <div>
                             <h1>No foods found.</h1>
                         </div>

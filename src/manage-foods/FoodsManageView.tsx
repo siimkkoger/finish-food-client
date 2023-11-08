@@ -40,7 +40,7 @@ const FoodsManageView: React.FC = () => {
                     };
                     const data = await fetchFoods(filter);
                     // Simulate a slow network connection
-                    setTimeout(() => setFoods(data), 400);
+                    setTimeout(() => setFoods(data.foods), 400);
                 } catch (e) {
                     if (e instanceof Error) {
                         setError(e.message);

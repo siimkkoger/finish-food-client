@@ -9,17 +9,19 @@ const NavBar: React.FC = () => {
     const [foods, setFoods] = useState<GetFoodResponse[]>([]);
     const [showFoodList, setShowFoodList] = useState(false);
 
+    /*
     useEffect(() => {
         const getFoods = async () => {
             try {
                 const data = await fetchFoods(DEFAULT_FILTER);
-                setFoods(data);
+                setFoods(data.foods);
             } catch (error) {
                 console.error("Error fetching foods:", error);
             }
         };
         getFoods();
     }, []);
+     */
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
